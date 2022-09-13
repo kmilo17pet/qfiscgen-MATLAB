@@ -217,14 +217,14 @@ function varargout=qfiscgen(varargin)
         code = code + tabchar + fuzzin_arrname + "[ " + innames{k} + " ].value = inputs[ " + innames{k} + " ]" + newline;
     end
     code = code + newline + tabchar + "qFIS_Fuzzify( &" + objname + " );" + newline;
-    code = code + tabchar + "if ( qFIS_Inference( &" + objname + ", rules ) == 0 ) {" + newline + tabchar + tabchar + "/* Error! */" + newline + tabchar + "}" + newline;
-    code = code + tabchar + "qFIS_DeFuzzify( &" + objname + " );" + newline;
+    code = code + tabchar + "if ( qFIS_Inference( &" + objname + ", rules ) > 0 ) {" + newline;
+    code = code + tabchar + tabchar + "qFIS_DeFuzzify( &" + objname + " );" + newline;
+    code = code + tabchar + "else {" + newline + tabchar + tabchar + "/* Error! */" + newline + tabchar + "}" + newline;
     code = code + newline + tabchar + "/* Get the crips outputs */" + newline;
     for k=1:nouts
         code = code + tabchar + "outputs[ " + outnames{k} + " ] = " + fuzzout_arrname + "[ " + outnames{k} + " ].value;" + newline;
     end
-    code = code + newline + tabchar + "return (EXIT_SUCCESS);" + newline + "}" + newline;
-
+    code = code + "}";
     disp("Creating " + objname + "_fis.c ...");
     fid = fopen(objname + "_fis.c",'wt');
     fprintf(fid, code);
