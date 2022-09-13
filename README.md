@@ -9,3 +9,4 @@ Example : Generate C code from the built-in tipper example:
 qfiscgen( readfis( 'tipper.fis') )
 ```
 
+Note: Obtain the qFIS engine from https://github.com/kmilo17pet/qlibs
