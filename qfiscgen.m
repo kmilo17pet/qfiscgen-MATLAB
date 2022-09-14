@@ -104,6 +104,9 @@ function varargout=qfiscgen(varargin)
    
     rw = 0;
     for k=1:length(fis.rules)
+        if  contains( extractAfter( fis.rules(k).description, "=>" ), "~" ) 
+            error("Negated consequents are not supported");
+        end
         r = tabchar + tabchar + "IF " + fis.rules(k).Description;
         r = strrep( r, "=>", "THEN");
         r = strrep( r, "==", " IS ");
@@ -157,6 +160,9 @@ function varargout=qfiscgen(varargin)
         for l=1:length(fis.input(k).mf)
             strp = sprintf('%ff, ',fis.inputs(k).membershipfunctions(l).parameters);
             strp(end:-1:end-1)='';
+            if 0 == checkmf( fis.input(k).mf(l).type )
+                error('Custom membership functions are not supported');
+            end
             code = code + tabchar + "qFIS_SetMF( MFin, " + innames{k} + ", " + mfins{k}{l} + ", " + fis.input(k).mf(l).type + ", NULL, " + mfins{k}{l} + "_p" + ", 1.0f );" + newline;    
         end
     end
@@ -166,6 +172,9 @@ function varargout=qfiscgen(varargin)
         for l=1:length(fis.output(k).mf)
             strp = sprintf('%ff, ',fis.Outputs(k).membershipfunctions(l).parameters);
             strp(end:-1:end-1)='';
+            if 0 == checkmf( fis.outputs(k).mf(l).type )
+                error('Custom membership functions are not supported');
+            end
             mftype = fis.outputs(k).mf(l).type;
             if mftype == "linear" || mftype == "constant"
                 mftype = mftype + 'mf';
@@ -263,4 +272,9 @@ function b = fix2varname(a)
     b=b(find(b>char(65),1,'first'):end);
     b=strrep(b,' ','_');
     b=strrep(b,'__','_');
+end
+
+
+function y = checkmf( mfname )
+    y = sum( mfname == ["trimf" "trapmf" "gbellmf" "gaussmf" "gauss2mf" "sigmf" "dsigmf" "psigmf" "pimf" "smf" "zmf" "linsmf" "linzmf" "linear" "constant"] );
 end
