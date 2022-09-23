@@ -13,4 +13,3 @@ Note: Obtain the qFIS engine from https://github.com/kmilo17pet/qlibs (Only qFIS
 
 ## Un-supported features
 - Custom membership functions
-- Negated consequents
