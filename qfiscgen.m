@@ -5,7 +5,7 @@
 %
 %   See also READFIS, FUZZY, FISRULE.
 
-%	Version 2.101
+%	Version 2.102
 %   Copyright 2022 J. Camilo Gomez C.
 function varargout=qfiscgen(varargin)
     narginchk( 1, 1);
@@ -210,18 +210,19 @@ function consolidate( name, code_c, code_h )
            "/* Generated : " + string(datetime) + " */" + newline +...
            "/* Note: Obtain the qFIS engine from https://github.com/kmilo17pet/qlibs */" + newline;
     disp("Creating " + name + "_fis.c ...");
-    fid = fopen( name + "_fis.c", 'wt');
+    filename_c = fullfile( pwd,name+ "_fis.c" );
+    fid = fopen( filename_c, 'wt');
     fprintf( fid, head+code_c );
     fclose( fid );
-
     disp("Creating " + name + "_fis.h ...");
-    fid = fopen( name + "_fis.h",'wt');
+    filename_h = fullfile( pwd,name+ "_fis.h" );
+    fid = fopen( filename_h,'wt');
     fprintf(fid, head + code_h);
     fclose(fid);
     disp('Obtaining latest qFIS engine from https://github.com/kmilo17pet/qlibs/ ...');
-    websave( 'qfis.c', 'https://github.com/kmilo17pet/qlibs/raw/main/qfis.c');
+    websave( fullfile(pwd,'qfis.c'), 'https://github.com/kmilo17pet/qlibs/raw/main/qfis.c');
     disp('qfis.c obtained')
-    websave( 'qfis.h', 'https://github.com/kmilo17pet/qlibs/raw/main/include/qfis.h');
+    websave( fullfile(pwd,'qfis.h'), 'https://github.com/kmilo17pet/qlibs/raw/main/include/qfis.h');
     disp('qfis.h obtained')
 end
 %--------------------------------------------------------------------------
