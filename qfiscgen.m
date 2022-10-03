@@ -5,7 +5,7 @@
 %
 %   See also READFIS, FUZZY, FISRULE.
 
-%	Version 2.103
+%	Version 2.104
 %   Copyright 2022 J. Camilo Gomez C.
 function varargout=qfiscgen(varargin)
     narginchk( 1, 1);
@@ -179,7 +179,8 @@ function varargout=qfiscgen(varargin)
              tabchar + "void " + objname + "_run( float *inputs, float *outputs );" + newline + newline +...
              "#ifdef __cplusplus" + newline +...
              tabchar + '}' + newline +...
-             "#endif" + newline;
+             "#endif" + newline + newline + ...
+             "#endif /* " + upper(objname) + "_FIS_H */" + newline;
 
     consolidate( objname, code, header);
     varargout = {};
