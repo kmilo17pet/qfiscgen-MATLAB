@@ -5,7 +5,7 @@
 %
 %   See also READFIS, FUZZY, FISRULE.
 
-%	Version 2.104
+%	Version 2.105
 %   Copyright 2022 J. Camilo Gomez C.
 function varargout=qfiscgen(varargin)
     narginchk( 1, 1);
@@ -232,6 +232,10 @@ function consolidate( name, code_c, code_h )
         disp('qfis.c obtained')
         websave( fullfile(pwd,'qfis.h'), 'https://github.com/kmilo17pet/qlibs/raw/main/include/qfis.h');
         disp('qfis.h obtained')
+        websave( fullfile(pwd,'qfmathex.h'), 'https://github.com/kmilo17pet/qlibs/raw/main/include/qfmathex.h');
+        disp('qfmathex.h obtained')
+        websave( fullfile(pwd,'qfmathex.c'), 'https://github.com/kmilo17pet/qlibs/raw/main/qfmathex.c');
+        disp('qfmathex.c obtained')
     catch
         disp('qFIS engine cannot be obtained, please download it manually from https://github.com/kmilo17pet/qlibs/')
     end
