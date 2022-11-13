@@ -5,7 +5,7 @@
 %
 %   See also READFIS, FUZZY, FISRULE.
 
-%	Version 2.105
+%	Version 2.106
 %   Copyright 2022 J. Camilo Gomez C.
 function varargout=qfiscgen(varargin)
     narginchk( 1, 1);
