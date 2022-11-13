@@ -216,27 +216,36 @@ function consolidate( name, code_c, code_h )
            "/* Generated : " + string(datetime) + " */" + newline +...
            "/* MATLAB Version: " + string(version) + " */" + newline + ...
            "/* Note: Based on the qFIS engine from https://github.com/kmilo17pet/qlibs */" + newline + newline;
-    disp("Creating " + name + "_fis.c ...");
+    disp(" - Creating " + name + "_fis.c ...");
+    qfis_repo = "https://github.com/kmilo17pet/qlibs/raw/main/";
     filename_c = fullfile( pwd,name+ "_fis.c" );
     fid = fopen( filename_c, 'wt');
     fprintf( fid, head+code_c );
     fclose( fid );
-    disp("Creating " + name + "_fis.h ...");
+    disp(" - Creating " + name + "_fis.h ...");
     filename_h = fullfile( pwd,name+ "_fis.h" );
     fid = fopen( filename_h,'wt');
     fprintf(fid, head + code_h);
     fclose(fid);
     disp('Obtaining latest qFIS engine from https://github.com/kmilo17pet/qlibs/ ...');
     try
-        websave( fullfile(pwd,'qfis.c'), 'https://github.com/kmilo17pet/qlibs/raw/main/qfis.c');
-        disp('qfis.c obtained')
-        websave( fullfile(pwd,'qfis.h'), 'https://github.com/kmilo17pet/qlibs/raw/main/include/qfis.h');
-        disp('qfis.h obtained')
-        websave( fullfile(pwd,'qfmathex.h'), 'https://github.com/kmilo17pet/qlibs/raw/main/include/qfmathex.h');
-        disp('qfmathex.h obtained')
-        websave( fullfile(pwd,'qfmathex.c'), 'https://github.com/kmilo17pet/qlibs/raw/main/qfmathex.c');
-        disp('qfmathex.c obtained')
-    catch
+        websave( fullfile(pwd,'qfis.list'), qfis_repo + "dep/qfis.list" );
+        fid = fopen( fullfile(pwd,'qfis.list') );
+        fline = strtrim( fgets(fid) );
+        disp(' - Obtaining list of required files...')
+        while ischar(fline)
+            tline = strtrim( fline );
+            [~, filename, ext ] = fileparts(tline);
+            fileout = [ filename ext ];
+%             disp( "downloading [ " + qfis_repo + tline  + " ] to " + fullfile(pwd, fileout ) )
+            websave( fullfile(pwd, fileout ), qfis_repo + tline );
+            disp( "    - "+ fileout + " obtained!")
+            fline = fgets(fid);
+        end
+        fclose(fid);
+    catch me
+        me.message
+        me.identifier
         disp('qFIS engine cannot be obtained, please download it manually from https://github.com/kmilo17pet/qlibs/')
     end
 end
